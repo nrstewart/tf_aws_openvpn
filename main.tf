@@ -46,6 +46,11 @@ resource "aws_security_group" "openvpn" {
   }
 }
 
+resource "aws_key_pair" "default" {
+  key_name      = "${var.name}"
+  public_key    = "${var.public_key_file}"
+}
+
 resource "aws_instance" "openvpn" {
   ami           = "${var.ami}"
   instance_type = "${var.instance_type}"
@@ -78,9 +83,9 @@ USERDATA
       "sleep 60",
 
       # Set VPN network info
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpc_cidr), 0)} ConfigPut",
 
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpc_cidr), 1)} ConfigPut",
 
       # Do a warm restart so the config is picked up
       "sudo /usr/local/openvpn_as/scripts/sacli start",

@@ -1,6 +1,6 @@
 # tf_aws_openvpn
 
-Terraform module which creates OpenVPN on AWS
+Terraform module which creates OpenVPN Access Server using Amazon Machine Image from AWS Marketplace.
 
 ## This module is creating the following resources:
 
