@@ -54,7 +54,7 @@ resource "aws_key_pair" "default" {
 resource "aws_instance" "openvpn" {
   ami           = "${var.ami}"
   instance_type = "${var.instance_type}"
-  key_name      = "${var.key_name}"
+  key_name      = "${aws_key_pair.default.key_name}"
   subnet_id     = "${element(var.public_subnet_ids, count.index)}"
 
   vpc_security_group_ids = ["${aws_security_group.openvpn.id}"]
