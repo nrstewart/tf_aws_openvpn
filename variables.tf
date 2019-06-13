@@ -10,7 +10,6 @@ variable "public_subnet_ids" {
 }
 
 variable "cert_arn" {}
-variable "key_name" {}
 variable "public_key_file" {}
 variable "ami" {}
 variable "instance_type" {}
