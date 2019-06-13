@@ -70,27 +70,27 @@ admin_user=${var.openvpn_admin_user}
 admin_pw=${var.openvpn_admin_pw}
 USERDATA
 
-  provisioner "remote-exec" {
-    connection {
-      user        = "${var.openvpn_user}"
-      host        = "${self.public_ip}"
-      private_key = "${var.private_key}"
-      timeout     = "10m"
-    }
-
-    inline = [
-      # Sleep 60 seconds until AMI is ready
-      "sleep 60",
-
-      # Set VPN network info
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpc_cidr), 0)} ConfigPut",
-
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpc_cidr), 1)} ConfigPut",
-
-      # Do a warm restart so the config is picked up
-      "sudo /usr/local/openvpn_as/scripts/sacli start",
-    ]
-  }
+#  provisioner "remote-exec" {
+#    connection {
+#      user        = "${var.openvpn_user}"
+#      host        = "${self.public_ip}"
+#      private_key = "${var.private_key}"
+#      timeout     = "10m"
+#    }
+#
+#    inline = [
+#      # Sleep 60 seconds until AMI is ready
+#      "sleep 60",
+#
+#      # Set VPN network info
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpc_cidr), 0)} ConfigPut",
+#
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpc_cidr), 1)} ConfigPut",
+#
+#      # Do a warm restart so the config is picked up
+#      "sudo /usr/local/openvpn_as/scripts/sacli start",
+#    ]
+#  }
 }
 
 resource "aws_elb" "openvpn" {
